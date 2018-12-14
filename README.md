@@ -157,5 +157,67 @@ things get more complex. I haven't considered about the functions parameters yet
 
 # Parameters
 
+This turned out to be the hardest part, and its primarily the reason I decided
+to start this document. I've put this document into github to allow it to be a
+living document so I can modify it as my knowledge improves..because there are
+still cases I don't find easy to understand...
+
+Firsly I found it hard to work out how I could add to the predicate something
+complex as looking at the various parameters of the method. I did what most
+people would probably do and I looked at how others did it..
+
+In the end the reviewers gave me the guidance I needed to work our how to add my
+own little matcher functions
+
+So what are the rules I initially needed
+
+1. If the function takes no parameters then it may be a candidate
+2. If the function takes pass-by-value types it may be a candidate
+3. If the function takes a pointer it may not be a candidate
+4. If the function takes a reference it may not be a candidate
+5. If the function takes a non-const reference it may be a candidate
+
+Ok this seems like I needed something that let me look at all the parameters and
+test them for the following rules
+
+Do do this I introduce my own matcher predicate function, this was easier than I
+expected. I simply added a AST_MASTER that would work on a CXXMethodDecl
+
+```c++
+AST_MATCHER(CXXMethodDecl, hasNonConstReferenceOrPointerArguments) {
+    // determine if it does or not and return true or false
+    return true;
+}
+```
+
+Now I could plumb this into my matcher, I know! it was that simply...
+
+```c++
+  Finder->addMatcher(
+      cxxMethodDecl(allOf(unless(returns(voidType())), isConst(),
+                          unless(hasNonConstReferenceOrPointerArguments())
+                          ))
+          .bind("no_discard"),
+      this);
+```
+
+Now I needed to actually do something in the matcher, by simply returning true,
+it didn't really take into account anything..
+
+However If I'd just used `Node.param_empty()` then I could have returned a true
+for all member functions who have no arguments
+
+
+```c++
+AST_MATCHER(CXXMethodDecl, hasNonConstReferenceOrPointerArguments) {
+    return Node.param_empty();
+}
+```
+
+plugging that into my matcher gives me "All non-void const member function which
+have no arguments"... which is actually pretty good rule for using
+`[[nodiscard]]` , it will catch all those getter functions, or functions that
+simply return a simple boolean results like `empty()`
+
 
 
