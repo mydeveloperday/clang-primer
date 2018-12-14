@@ -241,10 +241,17 @@ simply return a simple boolean results like `empty()`
     - Underlying type
 
 # Typical Review Gotchas
+    - Code Locations and Macros
     - Ensure your documentation is clean.
     - Ensure grammatical error free.
     - Capital letters and full stops in code comments.
+        - Quoting code in comments
     - Unit Tests
     - Release Notes/Documentation
+    - static functions vs anonymous namespaces
+    - Options
+        - Testing Options
+    - Fixits
+        - Insertion Locations
 
 ... work in progress..
