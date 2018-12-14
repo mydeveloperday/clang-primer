@@ -162,14 +162,13 @@ to start this document. I've put this document into github to allow it to be a
 living document so I can modify it as my knowledge improves..because there are
 still cases I don't find easy to understand...
 
-Firsly I found it hard to work out how I could add to the predicate something
-complex as looking at the various parameters of the method. I did what most
+Firstly I found it hard to work out how I could add to the predicate for something complex as looking at the various parameters of the method. I did what most
 people would probably do and I looked at how others did it..
 
 In the end the reviewers gave me the guidance I needed to work our how to add my
 own little matcher functions
 
-So what are the rules I initially needed
+So what are the rules I initially needed for ``[[nodiscard]]``
 
 1. If the function takes no parameters then it may be a candidate
 2. If the function takes pass-by-value types it may be a candidate
