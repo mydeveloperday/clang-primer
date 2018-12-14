@@ -1,6 +1,9 @@
 # Clang-Primer
 A description of tricks  and tips when using Clang AST for developing tools such a clang-tidy checker
 
+Hopefully this can act as a guide for those wishing to learn how to write a
+simple checker
+
 # Introduction
 
 I recently embarked on writing a new clang-tidy checker. This was relatively simple process, however the devil was in the detail.
@@ -218,19 +221,30 @@ have no arguments"... which is actually pretty good rule for using
 `[[nodiscard]]` , it will catch all those getter functions, or functions that
 simply return a simple boolean results like `empty()`
 
-# Variadic Functions
-
 # Function Declaration,Definitions and Inlines
 
+# QualType, clang::Type, PointeeType, ParamVarDecl
+    - Type Troubles
+
 # Templates
+    - Determining template parameters
+
+# Variadic Functions
+    - Variadic
+    - Lamdas
+    - Function Pointers
 
 # Typedefs
+    - Underlying type
 
 # Usings
+    - Underlying type
 
 # Typical Review Gotchas
-    - ensure your documentation is clean
-    - ensure grammatical error free
-    - Capitcal letters and full stops in code comments
+    - Ensure your documentation is clean.
+    - Ensure grammatical error free.
+    - Capital letters and full stops in code comments.
+    - Unit Tests
+    - Release Notes/Documentation
 
 ... work in progress..
