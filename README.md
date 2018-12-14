@@ -218,5 +218,19 @@ have no arguments"... which is actually pretty good rule for using
 `[[nodiscard]]` , it will catch all those getter functions, or functions that
 simply return a simple boolean results like `empty()`
 
+# Variadic Functions
 
+# Function Declaration,Definitions and Inlines
 
+# Templates
+
+# Typedefs
+
+# Usings
+
+# Typical Review Gotchas
+    - ensure your documentation is clean
+    - ensure grammatical error free
+    - Capitcal letters and full stops in code comments
+
+... work in progress..
