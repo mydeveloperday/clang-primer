@@ -212,7 +212,7 @@ for all member functions who have no arguments
 
 ```c++
 AST_MATCHER(CXXMethodDecl, hasNonConstReferenceOrPointerArguments) {
-    return Node.param_empty();
+    return !Node.param_empty();
 }
 ```
 
@@ -222,6 +222,42 @@ have no arguments"... which is actually pretty good rule for using
 simply return a simple boolean results like `empty()`
 
 # Function Declaration,Definitions and Inlines
+
+If we just used functions which took no parameters we would likely limit the
+number of functions that we would add `[[nodiscard]]`, but there are probably a
+whole load of functions which should have `[[nodiscard]]` which take parameters
+
+
+```c++
+class Foo
+{
+    bool Bar(int val) const;
+};
+```
+
+Just because this function takes a pass by value parameter, doesn't make it any
+less of a nodiscard candidate, so we need to have our checker look at the
+arguments.. so how do we do that.
+
+We can use the `llvm_any_of` method with a lambda to return true when we have a
+type we don't want to support.
+
+```c++
+AST_MATCHER(CXXMethodDecl, hasNonConstReferenceOrPointerArguments) {
+  return llvm::any_of(Node.parameters(), [](const ParmVarDecl *Par) {
+    QualType ParType = Par->getType();
+    /// condition
+    return true;
+  });
+}
+```
+
+by looking at the parameter type we should be able to detect the paramrter
+types we don't want to allow in `[[nodiscard]]` cases
+
+This was the real motivation for this document, understanding how the
+ParmVarDecl and QualType can be used to detect different types is a real
+challenge.
 
 # QualType, clang::Type, PointeeType, ParamVarDecl
     - Type Troubles
